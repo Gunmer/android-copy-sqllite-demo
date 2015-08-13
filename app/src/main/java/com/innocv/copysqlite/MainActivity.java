@@ -1,14 +1,12 @@
 package com.innocv.copysqlite;
 
-import android.support.v7.app.AppCompatActivity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,17 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        try {
+        MySqliteHelper mySqliteHelper = new MySqliteHelper(this);
+        SQLiteDatabase readableDatabase = mySqliteHelper.getReadableDatabase();
 
-            myDbHelper.openDataBase();
+        Cursor cursor = readableDatabase.rawQuery("Select * from ATMS", null);
 
-        }catch(SQLException sqle){
+        String message = "Atms Count" + cursor.getCount();
 
-            Log.e("MainActivity", sqle.getMessage(), sqle);
-
-        }
-
-        text.setText("base de datos creada");
+        text.setText(message);
     }
 
 }
